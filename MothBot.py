@@ -226,7 +226,7 @@ class MusicCog(commands.Cog):
 
         ctx.message.author = user
 
-        if msg.id == ctx.voice_state.player_message.id:
+        if ctx.voice_state.player_message and msg.id == ctx.voice_state.player_message.id:
             if reaction.emoji == '\U000023EF':  # Play/Pause
                 await ctx.invoke(self._pause)
             elif reaction.emoji == '\U000023F9':  # Stop
@@ -249,7 +249,7 @@ class MusicCog(commands.Cog):
 
         ctx.message.author = user
 
-        if msg.id == ctx.voice_state.player_message.id:
+        if ctx.voice_state.player_message and msg.id == ctx.voice_state.player_message.id:
             if reaction.emoji == '\U000023EF':  # Play/Pause
                 await ctx.invoke(self._resume)
             elif reaction.emoji == '\U0001F502':  # Repeat Single
@@ -308,7 +308,7 @@ async def roll(ctx, *,  dice: str):
                            + " is " + str(sum_rolls) + "\n```")
         else:
             await ctx.send("```" + dice.replace(" ", "")
-                           + " is " + " + ".join(roll_nums) + " + " + " = " + str(sum_rolls) + "\n```")
+                           + " is a roll of " + " + ".join(roll_nums) + " = " + str(sum_rolls) + "\n```")
     else:
         await ctx.send("```" + dice.replace(" ", "")
                        + " is " + " + ".join(roll_nums) + " + " + str(adder) + " = " + str(sum_rolls) + "\n```")
@@ -316,7 +316,9 @@ async def roll(ctx, *,  dice: str):
 
 @bot.command()
 async def bitch(ctx):
-    await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know "
+    do_copypasta = random.random()
+    if do_copypasta < 0.1:
+        await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know "
                 + "I graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on"
                 + " Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top "
                 + "sniper in the entire US armed forces. You are nothing to me but just another target. "
@@ -332,6 +334,8 @@ async def bitch(ctx):
                 + "unholy retribution your little \"clever\" comment was about to bring down upon you, maybe you would "
                 + "have held your fucking tongue. But you couldn't, you didn't, and now you're paying the price, you "
                 + "goddamn idiot. I will shit fury all over you and you will drown in it. You're fucking dead, kiddo.")
+    else:
+        await ctx.send(ctx.message.author.mention + " bitch")
 
 
 @bot.command()
