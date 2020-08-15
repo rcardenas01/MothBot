@@ -285,6 +285,7 @@ async def roll(ctx, *,  dice: str):
             rollers, adder = dice.replace(" ", "").split("+")
 
             adder = int(adder)
+            sum_rolls += adder
         else:
             rollers = dice.replace(" ", "")
 
@@ -311,7 +312,7 @@ async def roll(ctx, *,  dice: str):
                            + " is a roll of " + " + ".join(roll_nums) + " = " + str(sum_rolls) + "\n```")
     else:
         await ctx.send("```" + dice.replace(" ", "")
-                       + " is " + " + ".join(roll_nums) + " + " + str(adder) + " = " + str(sum_rolls) + "\n```")
+                       + " is a roll of " + " + ".join(roll_nums) + " + " + str(adder) + " = " + str(sum_rolls) + "\n```")
 
 
 @bot.command()
