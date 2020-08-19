@@ -318,7 +318,7 @@ async def roll(ctx, *,  dice: str):
 @bot.command()
 async def bitch(ctx):
     do_copypasta = random.random()
-    if do_copypasta < 0.1:
+    if do_copypasta <= 0.1:
         await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know "
                 + "I graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on"
                 + " Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top "
@@ -354,7 +354,7 @@ async def on_message(message):
         if emoji:
             await message.add_reaction(emoji)
 
-    if "moth" in message.content.lower() and prefix not in message.content:
+    if (" moth " in message.content.lower()) or ("moth" in message.content.lower() and len(message.content) == len("moth")):
         await message.channel.send("praise be")
 
     if "darryl" in message.content.lower():
