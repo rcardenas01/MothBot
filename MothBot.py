@@ -305,13 +305,13 @@ async def roll(ctx, *,  dice: str):
 
     if adder == 0:
         if rolls == 1:
-            await ctx.send("Roll " + dice.replace(" ", "") + ": " + str(sum_rolls))
+            await ctx.send("Roll `" + dice.replace(" ", "") + "`: " + str(sum_rolls))
         else:
-            await ctx.send("Roll " + dice.replace(" ", "")
-                           + ": " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + "`)")
+            await ctx.send("Roll `" + dice.replace(" ", "")
+                           + "`: " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + "`)")
     else:
-        await ctx.send("Roll " + dice.replace(" ", "")
-                       + ": " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + " + " + str(adder) + "`)")
+        await ctx.send("Roll `" + dice.replace(" ", "")
+                       + "`: " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + " + " + str(adder) + "`)")
 
 
 @bot.command()
