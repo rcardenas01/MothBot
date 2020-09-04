@@ -281,6 +281,9 @@ async def roll(ctx, *,  dice: str):
         rollers = ""
         roll_nums = []
 
+        if dice.find("d") == 0:
+            dice = "1" + dice
+
         if "+" in dice:
             rollers, adder = dice.replace(" ", "").split("+")
 
@@ -288,9 +291,6 @@ async def roll(ctx, *,  dice: str):
             sum_rolls += adder
         else:
             rollers = dice.replace(" ", "")
-
-        if rollers.find("d") == 0:
-            rollers = "1" + rollers
 
         rolls, limit = map(int, rollers.split("d"))
 
@@ -305,21 +305,22 @@ async def roll(ctx, *,  dice: str):
 
     if adder == 0:
         if rolls == 1:
-            await ctx.send("```" + dice.replace(" ", "")
-                           + " is " + str(sum_rolls) + "\n```")
+            await ctx.send("Roll " + dice.replace(" ", "") + ": " + str(sum_rolls))
         else:
-            await ctx.send("```" + dice.replace(" ", "")
-                           + " is a roll of " + " + ".join(roll_nums) + " = " + str(sum_rolls) + "\n```")
+            await ctx.send("Roll " + dice.replace(" ", "")
+                           + ": " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + "`)")
     else:
-        await ctx.send("```" + dice.replace(" ", "")
-                       + " is a roll of " + " + ".join(roll_nums) + " + " + str(adder) + " = " + str(sum_rolls) + "\n```")
+        await ctx.send("Roll " + dice.replace(" ", "")
+                       + ": " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + " + " + str(adder) + "`)")
 
 
 @bot.command()
 async def bitch(ctx):
     do_copypasta = random.random()
     if do_copypasta <= 0.1:
-        await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know "
+        async with ctx.channel.typing():
+            await asyncio.sleep(2)
+            await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know "
                 + "I graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on"
                 + " Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top "
                 + "sniper in the entire US armed forces. You are nothing to me but just another target. "
@@ -354,7 +355,8 @@ async def on_message(message):
         if emoji:
             await message.add_reaction(emoji)
 
-    if (" moth " in message.content.lower()) or ("moth" in message.content.lower() and len(message.content) == len("moth")):
+    if (("moth" in message.content.lower()) and ("mother" not in message.content.lower()))\
+            or ("moth" in message.author.nick.lower() and "mother" not in message.author.nick.lower()):
         await message.channel.send("praise be")
 
     if "darryl" in message.content.lower():
