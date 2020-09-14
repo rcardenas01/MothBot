@@ -359,7 +359,7 @@ async def on_message(message):
             or ("moth" in message.author.nick.lower() and "mother" not in message.author.nick.lower()):
         await message.channel.send("praise be")
 
-    if "praise be" in message.content.lower:
+    if "praise be" in message.content.lower():
         await message.channel.send("praise be")
 
     if "darryl" in message.content.lower():
