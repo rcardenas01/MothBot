@@ -367,17 +367,18 @@ async def on_message(message):
         if emoji:
             await message.add_reaction(emoji)
 
-    if ":thonk:" in message.content():
+    if "thonk" in message.content().lower and "megathonk" not in message.content.lower()\
+            and "gaythonk" not in message.content.lower():
         emoji = discord.utils.get(message.guild.emojis, name="thonk")
         if emoji:
             await message.add_reaction(emoji)
 
-    if ":megathonk:" in message.content():
+    if "megathonk" in message.content():
         emoji = discord.utils.get(message.guild.emojis, name="megathonk")
         if emoji:
             await message.add_reaction(emoji)
 
-    if ":gaythonk:" in message.content():
+    if "gaythonk" in message.content():
         emoji = discord.utils.get(message.guild.emojis, name="gaythonk")
         if emoji:
             await message.add_reaction(emoji)
