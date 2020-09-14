@@ -359,10 +359,31 @@ async def on_message(message):
             or ("moth" in message.author.nick.lower() and "mother" not in message.author.nick.lower()):
         await message.channel.send("praise be")
 
+    if "praise be" in message.content.lower:
+        await message.channel.send("praise be")
+
     if "darryl" in message.content.lower():
         emoji = discord.utils.get(message.guild.emojis, name="darryl")
         if emoji:
             await message.add_reaction(emoji)
+
+    if ":thonk:" in message.content():
+        emoji = discord.utils.get(message.guild.emojis, name="thonk")
+        if emoji:
+            await message.add_reaction(emoji)
+
+    if ":megathonk:" in message.content():
+        emoji = discord.utils.get(message.guild.emojis, name="megathonk")
+        if emoji:
+            await message.add_reaction(emoji)
+
+    if ":gaythonk:" in message.content():
+        emoji = discord.utils.get(message.guild.emojis, name="gaythonk")
+        if emoji:
+            await message.add_reaction(emoji)
+
+    if "fuck you" in message.content.lower():
+        await message.channel.send("no_u:")
 
     await bot.process_commands(message)
 
