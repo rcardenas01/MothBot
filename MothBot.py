@@ -238,6 +238,8 @@ class MusicCog(commands.Cog):
             elif reaction.emoji == '\U0001F502':  # Repeat Single
                 await ctx.invoke(self._loop)
 
+        await reaction.message.add_reaction(reaction.emoji)
+
     @commands.Cog.listener()
     async def on_reaction_remove(self, reaction: discord.reaction, user):
         if user == bot.user:
@@ -384,7 +386,7 @@ async def on_message(message):
             await message.add_reaction(emoji)
 
     if "fuck you" in message.content.lower():
-        await message.channel.send("no_u:")
+        await message.channel.send(":no_u:")
 
     await bot.process_commands(message)
 
