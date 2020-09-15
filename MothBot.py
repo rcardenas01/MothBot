@@ -238,7 +238,7 @@ class MusicCog(commands.Cog):
             elif reaction.emoji == '\U0001F502':  # Repeat Single
                 await ctx.invoke(self._loop)
 
-        await reaction.message.add_reaction(reaction.emoji)
+        # await reaction.message.add_reaction(reaction.emoji)
 
     @commands.Cog.listener()
     async def on_reaction_remove(self, reaction: discord.reaction, user):
@@ -276,7 +276,7 @@ async def on_ready():
 
 
 @bot.command()
-async def roll(ctx, *,  dice: str):
+async def roll(ctx: commands.Context, *,  dice: str):
     try:
         sum_rolls = 0
         adder = 0
@@ -317,7 +317,7 @@ async def roll(ctx, *,  dice: str):
 
 
 @bot.command()
-async def bitch(ctx):
+async def bitch(ctx: commands.Context):
     do_copypasta = random.random()
     if do_copypasta <= 0.1:
         async with ctx.channel.typing():
@@ -343,12 +343,12 @@ async def bitch(ctx):
 
 
 @bot.command()
-async def hello(ctx):
+async def hello(ctx: commands.Context):
     await ctx.send(ctx.message.author.mention + " hello")
 
 
 @bot.event
-async def on_message(message):
+async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
 
@@ -357,9 +357,13 @@ async def on_message(message):
         if emoji:
             await message.add_reaction(emoji)
 
-    if (("moth" in message.content.lower()) and ("mother" not in message.content.lower()))\
+    if (("moth" in message.content.lower()) and ("mother" not in message.content.lower())
+            and "nothbot" not in message.content.lower())\
             or ("moth" in message.author.nick.lower() and "mother" not in message.author.nick.lower()):
         await message.channel.send("praise be")
+
+    if "mothbot" in message.content.lower():
+        await message.channel.send("praise me")
 
     if "praise be" in message.content.lower():
         await message.channel.send("praise be")
@@ -375,6 +379,9 @@ async def on_message(message):
         if emoji:
             await message.add_reaction(emoji)
 
+    if "good bot" in message.content.lower():
+            await message.channel.send("thenk \U0001F642")  # Smiling face
+
     if "megathonk" in message.content.lower():
         emoji = discord.utils.get(message.guild.emojis, name="megathonk")
         if emoji:
@@ -385,8 +392,14 @@ async def on_message(message):
         if emoji:
             await message.add_reaction(emoji)
 
-    if "fuck you" in message.content.lower():
-        await message.channel.send(":no_u:")
+    if "fuck you" == message.content.lower() or "fuck off" == message.content.lower():
+        emoji = discord.utils.get(message.guild.emojis, name="no_u")
+        if emoji:
+            await message.channel.send(emoji)
+
+    if "bitch" == message.content.lower():
+        ctx = await bot.get_context(message)
+        await ctx.invoke(bitch)
 
     await bot.process_commands(message)
 
