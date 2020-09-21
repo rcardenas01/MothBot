@@ -358,7 +358,7 @@ async def on_message(message: discord.Message):
             await message.add_reaction(emoji)
 
     if (("moth" in message.content.lower()) and ("mother" not in message.content.lower())
-            and "nothbot" not in message.content.lower())\
+            and "mothbot" not in message.content.lower())\
             or ("moth" in message.author.nick.lower() and "mother" not in message.author.nick.lower()):
         await message.channel.send("praise be")
 
