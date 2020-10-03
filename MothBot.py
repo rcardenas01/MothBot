@@ -349,7 +349,7 @@ async def hello(ctx: commands.Context):
 
 @bot.command()
 async def trans(ctx: commands.Context):
-    await ctx.send("\U0001F3F3")
+    await ctx.send("\U0000FE0F")
 
 
 @bot.command()
