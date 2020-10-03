@@ -347,6 +347,18 @@ async def hello(ctx: commands.Context):
     await ctx.send(ctx.message.author.mention + " hello")
 
 
+@bot.command()
+async def trans(ctx: commands.Context):
+    await ctx.send("\U0001F3F3")
+
+
+@bot.command()
+async def no_u(ctx: commands.Context):
+    emoji = discord.utils.get(ctx.guild.emojis, name="no_u_shiny")
+    if(emoji):
+        await ctx.send(emoji)
+
+
 @bot.event
 async def on_message(message: discord.Message):
     if message.author == bot.user:
