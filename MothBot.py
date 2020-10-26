@@ -239,6 +239,11 @@ class MusicCog(commands.Cog):
                 await ctx.invoke(self._loop)
 
         # await reaction.message.add_reaction(reaction.emoji)
+        if reaction.emoji == '\U00002755':
+            await reaction.message.add_reaction('🇼')
+            await reaction.message.add_reaction('🇭')
+            await reaction.message.add_reaction('🇦')
+            await reaction.message.add_reaction('🇹')
 
     @commands.Cog.listener()
     async def on_reaction_remove(self, reaction: discord.reaction, user):
@@ -347,18 +352,6 @@ async def hello(ctx: commands.Context):
     await ctx.send(ctx.message.author.mention + " hello")
 
 
-@bot.command()
-async def trans(ctx: commands.Context):
-    await ctx.send("\U0000200D")
-
-
-@bot.command()
-async def no_u(ctx: commands.Context):
-    emoji = discord.utils.get(ctx.guild.emojis, name="no_u_shiny")
-    if(emoji):
-        await ctx.send(emoji)
-
-
 @bot.event
 async def on_message(message: discord.Message):
     if message.author == bot.user:
@@ -381,33 +374,33 @@ async def on_message(message: discord.Message):
         await message.channel.send("praise be")
 
     if "darryl" in message.content.lower():
-        emoji = discord.utils.get(message.guild.emojis, name="darryl")
-        if emoji:
-            await message.add_reaction(emoji)
+        await message.add_reaction(bot.get_emoji(620036969933701120))
 
     if "thonk" in message.content.lower() and "megathonk" not in message.content.lower()\
-            and "gaythonk" not in message.content.lower():
-        emoji = discord.utils.get(message.guild.emojis, name="thonk")
-        if emoji:
-            await message.add_reaction(emoji)
+            and "gaythonk" not in message.content.lower() and "doublethonk" not in message.content.lower():
+        await message.add_reaction(bot.get_emoji(621072530253414432))
 
     if "good bot" in message.content.lower():
-            await message.channel.send("thenk \U0001F642")  # Smiling face
+        await message.channel.send("thenk \U0001F642")  # Smiling face
 
     if "megathonk" in message.content.lower():
-        emoji = discord.utils.get(message.guild.emojis, name="megathonk")
-        if emoji:
-            await message.add_reaction(emoji)
+        await message.add_reaction(bot.get_emoji(739226375239630918))
 
     if "gaythonk" in message.content.lower():
-        emoji = discord.utils.get(message.guild.emojis, name="gaythonk")
-        if emoji:
-            await message.add_reaction(emoji)
+        await message.add_reaction(bot.get_emoji(750168162171093103))
+
+    if "doublethonk" in message.content.lower():
+        await message.add_reaction(bot.get_emoji(764553793039499286))
 
     if "fuck you" == message.content.lower() or "fuck off" == message.content.lower():
-        emoji = discord.utils.get(message.guild.emojis, name="no_u")
-        if emoji:
-            await message.channel.send(emoji)
+        use_shiny = random.random()
+        if use_shiny <= 0.2:
+            await message.channel.send(bot.get_emoji(759987510037446677))
+        else:
+            await message.channel.send(bot.get_emoji(759991573592932352))
+
+    if "mood" in message.content.lower:
+        await message.add_reaction(bot.get_emoji(763089454004961351))
 
     if "bitch" == message.content.lower():
         ctx = await bot.get_context(message)
