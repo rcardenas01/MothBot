@@ -281,6 +281,14 @@ async def on_ready():
 
 
 @bot.command()
+@commands.is_owner()
+@commands.dm_only()
+async def say(ctx: commands.Context, channel: discord.TextChannel, message: str):
+    if channel is not None:
+        await channel.send(message)
+
+
+@bot.command()
 async def roll(ctx: commands.Context, *,  dice: str):
     try:
         sum_rolls = 0
