@@ -239,7 +239,7 @@ class MusicCog(commands.Cog):
                 await ctx.invoke(self._loop)
 
         # await reaction.message.add_reaction(reaction.emoji)
-        if reaction.emoji == '\U00002755':
+        if reaction.emoji == '\U00002755' or reaction.emoji == '\U00002757':
             await reaction.message.add_reaction('🇼')
             await reaction.message.add_reaction('🇭')
             await reaction.message.add_reaction('🇦')
@@ -280,12 +280,24 @@ async def on_ready():
     await bot.change_presence(activity=activity)
 
 
+@bot.event
+async def on_command_error(ctx: commands.context, error: commands.CommandError):
+    if isinstance(error, commands.PrivateMessageOnly):
+        user = bot.get_user(238801458030575627)
+        await user.send("Someone tried to get me to say something not in a DM.")
+
+    if isinstance(error, commands.NotOwner):
+        user = bot.get_user(238801458030575627)
+        await user.send("Someone tried to get me to say something that wasn't the owner.")
+
+
 @bot.command()
 @commands.is_owner()
 @commands.dm_only()
 async def say(ctx: commands.Context, channel: discord.TextChannel, message: str):
     if channel is not None:
         await channel.send(message)
+        await ctx.send("Message sent.")
 
 
 @bot.command()
