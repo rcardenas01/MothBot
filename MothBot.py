@@ -372,7 +372,8 @@ async def on_message(message: discord.Message):
 
     if (("moth" in message.content.lower()) and ("mother" not in message.content.lower())
             and "mothbot" not in message.content.lower())\
-            or ("moth" in message.author.nick.lower() and "mother" not in message.author.nick.lower()):
+            or (hasattr(message.author, "nick")
+                and "moth" in message.author.nick.lower() and "mother" not in message.author.nick.lower()):
         await message.channel.send("praise be")
 
     if "mothbot" in message.content.lower():
