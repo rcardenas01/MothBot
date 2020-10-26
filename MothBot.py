@@ -399,7 +399,7 @@ async def on_message(message: discord.Message):
         else:
             await message.channel.send(bot.get_emoji(759991573592932352))
 
-    if "mood" in message.content.lower:
+    if "mood" in message.content.lower():
         await message.add_reaction(bot.get_emoji(763089454004961351))
 
     if "bitch" == message.content.lower():
