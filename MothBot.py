@@ -282,16 +282,6 @@ class ChatCog(commands.Cog):
             await ctx.send("Channel has not been set!")
 
     @commands.command()
-    @commands.is_owner()
-    @commands.dm_only()
-    async def say(self, ctx: commands.context, emoji: int):
-        if self.current_channel is not None:
-            await self.current_channel.send(self.bot.get_emoji(emoji))
-            await ctx.send("Message sent.")
-        else:
-            await ctx.send("Channel has not been set!")
-
-    @commands.command()
     async def roll(self, ctx: commands.Context, *, dice: str):
         try:
             sum_rolls = 0
