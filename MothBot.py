@@ -418,8 +418,6 @@ async def on_ready():
     print("------")
     activity = discord.Activity(name='the light', type=discord.ActivityType.watching)
     await bot.change_presence(activity=activity)
-    user = bot.get_user(238801458030575627)
-    await user.send("MothBot online.")
 
 
 @bot.event
