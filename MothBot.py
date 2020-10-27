@@ -239,11 +239,6 @@ class MusicCog(commands.Cog):
                 await ctx.invoke(self._loop)
 
         # await reaction.message.add_reaction(reaction.emoji)
-        if reaction.emoji == '\U00002755' or reaction.emoji == '\U00002757':
-            await reaction.message.add_reaction('🇼')
-            await reaction.message.add_reaction('🇭')
-            await reaction.message.add_reaction('🇦')
-            await reaction.message.add_reaction('🇹')
 
     @commands.Cog.listener()
     async def on_reaction_remove(self, reaction: discord.reaction, user):
@@ -263,11 +258,156 @@ class MusicCog(commands.Cog):
                 await ctx.invoke(self._loop)
 
 
+class ChatCog(commands.Cog):
+    def __init__(self, bot: commands.bot):
+        self.bot = bot
+        self.current_channel = None
+
+    @commands.command()
+    @commands.is_owner()
+    @commands.dm_only()
+    async def set(self, ctx: commands.Context, channel: discord.TextChannel):
+        if channel is not None:
+            self.current_channel = channel
+            await ctx.send("Channel set to " + channel.name + ".")
+
+    @commands.command()
+    @commands.is_owner()
+    @commands.dm_only()
+    async def say(self, ctx: commands.Context, *, message: str):
+        if self.current_channel is not None:
+            await self.current_channel.send(message)
+            await ctx.send("Message sent.")
+        else:
+            await ctx.send("Channel has not been set!")
+
+    @commands.command()
+    @commands.is_owner()
+    @commands.dm_only()
+    async def say(self, ctx: commands.context, emoji: int):
+        if self.current_channel is not None:
+            await self.current_channel.send(self.bot.get_emoji(emoji))
+            await ctx.send("Message sent.")
+        else:
+            await ctx.send("Channel has not been set!")
+
+    @commands.command()
+    async def roll(self, ctx: commands.Context, *, dice: str):
+        try:
+            sum_rolls = 0
+            adder = 0
+            rollers = ""
+            roll_nums = []
+
+            if dice.find("d") == 0:
+                dice = "1" + dice
+
+            if "+" in dice:
+                rollers, adder = dice.replace(" ", "").split("+")
+
+                adder = int(adder)
+                sum_rolls += adder
+            else:
+                rollers = dice.replace(" ", "")
+
+            rolls, limit = map(int, rollers.split("d"))
+
+        except Exception:
+            await ctx.send('Format must be in (N)dN or (N)dN + c!')
+            return
+
+        for r in range(rolls):
+            num = random.randint(1, limit)
+            sum_rolls += num
+            roll_nums.append(str(num))
+
+        if adder == 0:
+            if rolls == 1:
+                await ctx.send("Roll `" + dice.replace(" ", "") + "`: " + str(sum_rolls))
+            else:
+                await ctx.send("Roll `" + dice.replace(" ", "")
+                               + "`: " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + "`)")
+        else:
+            await ctx.send("Roll `" + dice.replace(" ", "")
+                           + "`: " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + " + " + str(adder) + "`)")
+
+    @commands.command()
+    async def bitch(self, ctx: commands.Context):
+        do_copypasta = random.random()
+        if do_copypasta <= 0.1:
+            async with ctx.channel.typing():
+                await asyncio.sleep(2)
+                await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know "
+                               + "I graduated top of my class in the Navy Seals, and I've been involved in numerous "
+                               + "secret raids on  Al-Quaeda, and I have over 300 confirmed kills. I am trained in "
+                               + "gorilla warfare and I'm the top sniper in the entire US armed forces. You are nothing"
+                               + " to me but just another target. I will wipe you the fuck out with precision the likes"
+                               + " of which has never been seen before on this Earth, mark my fucking words. You think "
+                               + "you can get away with saying that shit to me over the Internet? Think again, fucker. "
+                               + "As we speak I am contacting my secret network of spies across the USA and your IP is "
+                               + "being traced right now so you better prepare for the storm, maggot. The storm that "
+                               + "wipes out the pathetic little thing you call your life. You're fucking dead, kid. I "
+                               + "can be anywhere, anytime, and I can kill you in over seven hundred ways, and that's "
+                               + "just with my bare hands. Not only am I extensively trained in unarmed combat, but I "
+                               + "have access to the entire arsenal of the United States Marine Corps and I will use it"
+                               + " to its full extent to wipe your miserable ass off the face of the continent, you "
+                               + "little shit. If only you could have known what unholy retribution your little "
+                               + "\"clever\" comment was about to bring down upon you, maybe you would have held your "
+                               + "fucking tongue. But you couldn't, you didn't, and now you're paying the price, you "
+                               + "goddamn idiot. I will shit fury all over you and you will drown in it. "
+                               + "You're fucking dead, kiddo.")
+        else:
+            await ctx.send(ctx.message.author.mention + " bitch")
+
+    @commands.command()
+    async def hello(self, ctx: commands.Context):
+        await ctx.send(ctx.message.author.mention + " hello")
+
+    @commands.Cog.listener()
+    async def on_message(self, message: discord.Message):
+        if message.author == bot.user:
+            return
+
+        if "good bot" in message.content.lower():
+            await message.channel.send("thenk \U0001F642")  # Smiling face
+
+        if "thonk" in message.content.lower() and "megathonk" not in message.content.lower() \
+                and "gaythonk" not in message.content.lower() and "doublethonk" not in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(621072530253414432))
+
+        if "megathonk" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(739226375239630918))
+
+        if "gaythonk" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(750168162171093103))
+
+        if "doublethonk" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(764553793039499286))
+
+        if "mood" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(763089454004961351))
+
+        if "darryl" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(620036969933701120))
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction: discord.Reaction, user):
+        if user == bot.user:
+            return
+
+        if reaction.emoji == '\U00002755' or reaction.emoji == '\U00002757':
+            await reaction.message.add_reaction('🇼')
+            await reaction.message.add_reaction('🇭')
+            await reaction.message.add_reaction('🇦')
+            await reaction.message.add_reaction('🇹')
+
+
 token = "NzA1Nzk0OTI3Nzk1MTA5ODg4.XsRsWQ.uwCzo_r6LMm1kQ6gX2YSfZUlRVs"
 prefix = "m!"
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(prefix))
 
 bot.add_cog(MusicCog(bot))
+bot.add_cog(ChatCog(bot))
 
 
 @bot.event
@@ -278,6 +418,8 @@ async def on_ready():
     print("------")
     activity = discord.Activity(name='the light', type=discord.ActivityType.watching)
     await bot.change_presence(activity=activity)
+    user = bot.get_user(238801458030575627)
+    await user.send("MothBot online.")
 
 
 @bot.event
@@ -291,96 +433,13 @@ async def on_command_error(ctx: commands.context, error: commands.CommandError):
         await user.send("Someone tried to get me to say something that wasn't the owner.")
 
 
-@bot.command()
-@commands.is_owner()
-@commands.dm_only()
-async def say(ctx: commands.Context, channel: discord.TextChannel, message: str):
-    if channel is not None:
-        await channel.send(message)
-        await ctx.send("Message sent.")
-
-
-@bot.command()
-async def roll(ctx: commands.Context, *,  dice: str):
-    try:
-        sum_rolls = 0
-        adder = 0
-        rollers = ""
-        roll_nums = []
-
-        if dice.find("d") == 0:
-            dice = "1" + dice
-
-        if "+" in dice:
-            rollers, adder = dice.replace(" ", "").split("+")
-
-            adder = int(adder)
-            sum_rolls += adder
-        else:
-            rollers = dice.replace(" ", "")
-
-        rolls, limit = map(int, rollers.split("d"))
-
-    except Exception:
-        await ctx.send('Format must be in NdN or NdN + c')
-        return
-
-    for r in range(rolls):
-        num = random.randint(1, limit)
-        sum_rolls += num
-        roll_nums.append(str(num))
-
-    if adder == 0:
-        if rolls == 1:
-            await ctx.send("Roll `" + dice.replace(" ", "") + "`: " + str(sum_rolls))
-        else:
-            await ctx.send("Roll `" + dice.replace(" ", "")
-                           + "`: " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + "`)")
-    else:
-        await ctx.send("Roll `" + dice.replace(" ", "")
-                       + "`: " + str(sum_rolls) + " (`" + " + ".join(roll_nums) + " + " + str(adder) + "`)")
-
-
-@bot.command()
-async def bitch(ctx: commands.Context):
-    do_copypasta = random.random()
-    if do_copypasta <= 0.1:
-        async with ctx.channel.typing():
-            await asyncio.sleep(2)
-            await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know "
-                + "I graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on"
-                + " Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top "
-                + "sniper in the entire US armed forces. You are nothing to me but just another target. "
-                + "I will wipe you the fuck out with precision the likes of which has never been seen before on this"
-                + " Earth, mark my fucking words. You think you can get away with saying that shit to me over the "
-                + "Internet? Think again, fucker. As we speak I am contacting my secret network of spies across the "
-                + "USA and your IP is being traced right now so you better prepare for the storm, maggot. "
-                + "The storm that wipes out the pathetic little thing you call your life. You're fucking dead, kid. "
-                + "I can be anywhere, anytime, and I can kill you in over seven hundred ways, and that's just with my"
-                + " bare hands. Not only am I extensively trained in unarmed combat, but I have access to the entire"
-                + " arsenal of the United States Marine Corps and I will use it to its full extent to wipe your "
-                + "miserable ass off the face of the continent, you little shit. If only you could have known what "
-                + "unholy retribution your little \"clever\" comment was about to bring down upon you, maybe you would "
-                + "have held your fucking tongue. But you couldn't, you didn't, and now you're paying the price, you "
-                + "goddamn idiot. I will shit fury all over you and you will drown in it. You're fucking dead, kiddo.")
-    else:
-        await ctx.send(ctx.message.author.mention + " bitch")
-
-
-@bot.command()
-async def hello(ctx: commands.Context):
-    await ctx.send(ctx.message.author.mention + " hello")
-
-
 @bot.event
 async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
 
     if message.author.name == "BerzerkerBear":
-        emoji = discord.utils.get(message.guild.emojis, name='Aian')
-        if emoji:
-            await message.add_reaction(emoji)
+        await message.add_reaction(bot.get_emoji(620031636771176461))
 
     if (("moth" in message.content.lower()) and ("mother" not in message.content.lower())
             and "mothbot" not in message.content.lower())\
@@ -394,38 +453,12 @@ async def on_message(message: discord.Message):
     if "praise be" in message.content.lower():
         await message.channel.send("praise be")
 
-    if "darryl" in message.content.lower():
-        await message.add_reaction(bot.get_emoji(620036969933701120))
-
-    if "thonk" in message.content.lower() and "megathonk" not in message.content.lower()\
-            and "gaythonk" not in message.content.lower() and "doublethonk" not in message.content.lower():
-        await message.add_reaction(bot.get_emoji(621072530253414432))
-
-    if "good bot" in message.content.lower():
-        await message.channel.send("thenk \U0001F642")  # Smiling face
-
-    if "megathonk" in message.content.lower():
-        await message.add_reaction(bot.get_emoji(739226375239630918))
-
-    if "gaythonk" in message.content.lower():
-        await message.add_reaction(bot.get_emoji(750168162171093103))
-
-    if "doublethonk" in message.content.lower():
-        await message.add_reaction(bot.get_emoji(764553793039499286))
-
     if "fuck you" == message.content.lower() or "fuck off" == message.content.lower():
         use_shiny = random.random()
-        if use_shiny <= 0.2:
+        if use_shiny <= 0.25:
             await message.channel.send(bot.get_emoji(759987510037446677))
         else:
             await message.channel.send(bot.get_emoji(759991573592932352))
-
-    if "mood" in message.content.lower():
-        await message.add_reaction(bot.get_emoji(763089454004961351))
-
-    if "bitch" == message.content.lower():
-        ctx = await bot.get_context(message)
-        await ctx.invoke(bitch)
 
     await bot.process_commands(message)
 
