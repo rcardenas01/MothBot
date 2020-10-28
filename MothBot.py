@@ -259,7 +259,7 @@ class MusicCog(commands.Cog):
 
 
 class ChatCog(commands.Cog):
-    def __init__(self, bot: commands.bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.current = None
 
