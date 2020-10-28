@@ -266,16 +266,16 @@ class ChatCog(commands.Cog):
     @commands.command()
     @commands.is_owner()
     @commands.dm_only()
-    async def set(self, ctx: commands.Context, id_send):
+    async def set(self, ctx: commands.Context, id_send: discord.abc.Messageable):
         self.current = self.bot.get_channel(id_send)
-        if self.current is not None:
-            await ctx.send("Destination to " + self.current.name + "in " + self.current.guild.name + ".")
-        else:
+        if self.current is None:
             self.current = self.bot.get_user(id_send)
-            if self.current is not None:
-                await ctx.send("Destination to " + self.current.name + ".")
-            else:
+            if self.current is None:
                 await ctx.send("That is not a valid destination.")
+            else:
+                await ctx.send("Destination to " + self.current.name + ".")
+        else:
+            await ctx.send("Destination to " + self.current.name + "in " + self.current.guild.name + ".")
 
     @commands.command()
     @commands.is_owner()
