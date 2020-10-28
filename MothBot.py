@@ -363,7 +363,7 @@ class ChatCog(commands.Cog):
     async def on_message(self, message: discord.Message):
         owner = bot.get_user(bot.owner_id)
         if message.author == bot.user or \
-                (message.author.id == owner.id and isinstance(message.channel, discord.DMChannel)):
+                (message.author.id == bot.owner_id and isinstance(message.channel, discord.DMChannel)):
             return
 
         if isinstance(message.channel, discord.DMChannel):
