@@ -361,8 +361,8 @@ class ChatCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        owner = bot.get_user(bot.owner_id)
-        if message.author == bot.user:
+        owner = self.bot.get_user(bot.owner_id)
+        if message.author == self.bot.user:
             return
 
         if isinstance(message.channel, discord.DMChannel) and message.author.id != owner.id:
