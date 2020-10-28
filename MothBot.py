@@ -267,7 +267,6 @@ class ChatCog(commands.Cog):
     @commands.is_owner()
     @commands.dm_only()
     async def set(self, ctx: commands.Context, id_send: int):
-        print(id_send)
         self.current = self.bot.get_channel(id_send)
         if self.current is None:
             self.current = self.bot.get_user(id_send)
@@ -276,7 +275,7 @@ class ChatCog(commands.Cog):
             else:
                 await ctx.send("Destination to " + self.current.name + ".")
         else:
-            await ctx.send("Destination to " + self.current.name + "in " + self.current.guild.name + ".")
+            await ctx.send("Destination to " + self.current.name + " in " + self.current.guild.name + ".")
 
     @commands.command()
     @commands.is_owner()
