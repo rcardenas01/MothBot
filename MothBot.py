@@ -364,7 +364,9 @@ class ChatCog(commands.Cog):
         if message.author == self.bot.user:
             return
 
-        if isinstance(message.channel, discord.DMChannel) and not self.bot.is_owner(message.author):
+        is_owner = await self.bot.is_owner(message.author)
+
+        if isinstance(message.channel, discord.DMChannel) and not is_owner:
             owner = self.bot.get_user(self.bot.owner_id)
             await owner.send("Message from " + message.author.name + ": " + message.content)
 
