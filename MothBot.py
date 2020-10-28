@@ -261,25 +261,31 @@ class MusicCog(commands.Cog):
 class ChatCog(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
-        self.current_channel = None
+        self.current = None
 
     @commands.command()
     @commands.is_owner()
     @commands.dm_only()
-    async def set(self, ctx: commands.Context, channel: discord.TextChannel):
-        if channel is not None:
-            self.current_channel = channel
-            await ctx.send("Channel set to " + channel.name + ".")
+    async def set(self, ctx: commands.Context, id_send):
+        self.current = self.bot.get_channel(id_send)
+        if self.current is not None:
+            await ctx.send("Destination to " + self.current.name + "in " + self.current.guild.name + ".")
+        else:
+            self.current = self.bot.get_user(id_send)
+            if self.current is not None:
+                await ctx.send("Destination to " + self.current.name + ".")
+            else:
+                await ctx.send("That is not a valid destination.")
 
     @commands.command()
     @commands.is_owner()
     @commands.dm_only()
     async def say(self, ctx: commands.Context, *, message: str):
-        if self.current_channel is not None:
-            await self.current_channel.send(message)
+        if self.current is not None:
+            await self.current.send(message)
             await ctx.send("Message sent.")
         else:
-            await ctx.send("Channel has not been set!")
+            await ctx.send("Destination has not been set!")
 
     @commands.command()
     async def roll(self, ctx: commands.Context, *, dice: str):
@@ -355,8 +361,13 @@ class ChatCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        if message.author == bot.user:
+        owner = bot.get_user(bot.owner_id)
+        if message.author == bot.user or \
+                (message.author.id == owner.id and isinstance(message.channel, discord.DMChannel)):
             return
+
+        if isinstance(message.channel, discord.DMChannel):
+            await owner.send("Message from " + message.author.name + ": " + message.content)
 
         if "good bot" in message.content.lower():
             await message.channel.send("thenk \U0001F642")  # Smiling face
@@ -449,6 +460,5 @@ async def on_message(message: discord.Message):
             await message.channel.send(bot.get_emoji(759991573592932352))
 
     await bot.process_commands(message)
-
 
 bot.run(token)
