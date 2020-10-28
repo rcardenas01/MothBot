@@ -361,11 +361,11 @@ class ChatCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        owner = self.bot.get_user(self.bot.owner_id)
         if message.author == self.bot.user:
             return
 
-        if isinstance(message.channel, discord.DMChannel) and message.author.id != owner.id:
+        if isinstance(message.channel, discord.DMChannel) and not self.bot.is_owner(message.author):
+            owner = self.bot.get_user(self.bot.owner_id)
             await owner.send("Message from " + message.author.name + ": " + message.content)
 
         if "good bot" in message.content.lower():
