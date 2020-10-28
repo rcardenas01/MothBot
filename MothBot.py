@@ -266,7 +266,7 @@ class ChatCog(commands.Cog):
     @commands.command()
     @commands.is_owner()
     @commands.dm_only()
-    async def set(self, ctx: commands.Context, id_send):
+    async def set(self, ctx: commands.Context, id_send: int):
         print(id_send)
         self.current = self.bot.get_channel(id_send)
         if self.current is None:
