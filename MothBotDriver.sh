@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export loop="loop"
+loop="loop"
+export loop
 while [ $loop == "loop" ]
 do
   echo $(git pull)
