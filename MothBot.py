@@ -5,6 +5,7 @@ from discord.ext import commands
 import random
 
 import math
+import os
 
 import Music
 
@@ -277,7 +278,7 @@ class ChatCog(commands.Cog):
         else:
             await ctx.send("Destination to " + self.current.name + " in " + self.current.guild.name + ".")
 
-    @commands.command()
+    @commands.command(aliases=['send'])
     @commands.is_owner()
     @commands.dm_only()
     async def say(self, ctx: commands.Context, *, message: str):
@@ -286,6 +287,22 @@ class ChatCog(commands.Cog):
             await ctx.send("Message sent.")
         else:
             await ctx.send("Destination has not been set!")
+
+    @commands.command()
+    @commands.is_owner()
+    @commands.dm_only()
+    async def refresh(self, ctx: commands.Context):
+        os.environ["loop"] = "loop"
+        await ctx.send("Refreshing code...")
+        await self.bot.logout()
+
+    @commands.command()
+    @commands.is_owner()
+    @commands.dm_only()
+    async def shutdown(self, ctx: commands.Context):
+        os.environ["loop"] = "stop"
+        await ctx.send("Shutting down...")
+        await self.bot.logout()
 
     @commands.command()
     async def roll(self, ctx: commands.Context, *, dice: str):
