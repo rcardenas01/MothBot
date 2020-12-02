@@ -435,7 +435,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print("------")
-    activity = discord.Activity(name='the light', type=discord.ActivityType.watching)
+    activity = discord.Activity(name='the Christmas lights', type=discord.ActivityType.watching)
     await bot.change_presence(activity=activity)
 
 
