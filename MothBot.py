@@ -391,7 +391,8 @@ class ChatCog(commands.Cog):
             await message.channel.send("thenk \U0001F642")  # Smiling face
 
         if "thonk" in message.content.lower() and "megathonk" not in message.content.lower() \
-                and "gaythonk" not in message.content.lower() and "doublethonk" not in message.content.lower():
+                and "gaythonk" not in message.content.lower() and "doublethonk" not in message.content.lower() \
+                and "codethonk" not in message.content.lower() and "eggthonk" not in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(621072530253414432))
 
         if "megathonk" in message.content.lower():
@@ -403,11 +404,20 @@ class ChatCog(commands.Cog):
         if "doublethonk" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(764553793039499286))
 
+        if "codethonk" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(786700064051298364))
+
+        if "eggthonk" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(786774524653862962))
+
         if "mood" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(763089454004961351))
 
         if "darryl" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(620036969933701120))
+
+        if "bruh" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(786149121123680266))
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user):
