@@ -416,8 +416,11 @@ class ChatCog(commands.Cog):
         if "darryl" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(620036969933701120))
 
-        if "bruh" in message.content.lower():
+        if "bruh" in message.content.lower() or "high" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(786149121123680266))
+
+        if "cocaine" in message.content.lower():
+            await message.add_reaction(self.bot.get_emoji(676624193739161613))
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user):
