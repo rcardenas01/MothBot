@@ -268,9 +268,9 @@ class ChatCog(commands.Cog):
     @commands.is_owner()
     @commands.dm_only()
     async def set(self, ctx: commands.Context, id_send: int):
-        self.current = self.bot.get_channel(id_send)
+        self.current = await self.bot.fetch_channel(id_send)
         if self.current is None:
-            self.current = self.bot.get_user(id_send)
+            self.current = await self.bot.fetch_user(id_send)
             if self.current is None:
                 await ctx.send("That is not a valid destination.")
             else:
