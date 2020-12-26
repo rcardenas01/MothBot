@@ -390,28 +390,26 @@ class ChatCog(commands.Cog):
         if "good bot" in message.content.lower():
             await message.channel.send("thenk \U0001F642")  # Smiling face
 
-        if "thonk" in message.content.lower() and "megathonk" not in message.content.lower() \
-                and "gaythonk" not in message.content.lower() and "doublethonk" not in message.content.lower() \
-                and "codethonk" not in message.content.lower() and "eggthonk" not in message.content.lower():
+        if ":thonk:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(621072530253414432))
 
-        if "megathonk" in message.content.lower():
+        if ":megathonk:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(739226375239630918))
 
-        if "gaythonk" in message.content.lower():
+        if ":gaythonk:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(750168162171093103))
 
-        if "doublethonk" in message.content.lower():
+        if ":doublethonk:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(764553793039499286))
 
-        if "codethonk" in message.content.lower():
+        if ":codethonk:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(786700064051298364))
 
-        if "eggthonk" in message.content.lower():
+        if ":eggthonk:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(786774524653862962))
 
         if "mood" in message.content.lower():
-            await message.add_reaction(self.bot.get_emoji(763089454004961351))
+            await message.add_reaction(self.bot.get_emoji(783010747491942431))
 
         if "darryl" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(620036969933701120))
@@ -419,7 +417,7 @@ class ChatCog(commands.Cog):
         if "bruh" in message.content.lower() or "high" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(786149121123680266))
 
-        if "cocaine" in message.content.lower():
+        if ":cocaine:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(676624193739161613))
 
     @commands.Cog.listener()
@@ -448,7 +446,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print("------")
-    activity = discord.Activity(name='the Christmas lights', type=discord.ActivityType.watching)
+    activity = discord.Activity(name='the big NYC New Year\'s ball', type=discord.ActivityType.watching)
     await bot.change_presence(activity=activity)
 
 
