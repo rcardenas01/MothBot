@@ -6,6 +6,7 @@ import random
 
 import math
 import os
+import json
 
 import Music
 
@@ -258,14 +259,20 @@ class MusicCog(commands.Cog):
             elif reaction.emoji == '\U0001F502':  # Repeat Single
                 await ctx.invoke(self._loop)
 
+def is_owner():
+    def predicate(ctx):
+        return ctx.author.id == 238801458030575627 or ctx.author.id == 787208554431119360
+    return commands.check(predicate)
+
 
 class ChatCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.current = None
+        self.reacts = {}
 
     @commands.command()
-    @commands.is_owner()
+    @is_owner()
     @commands.dm_only()
     async def set(self, ctx: commands.Context, id_send: int):
         self.current = await self.bot.fetch_channel(id_send)
@@ -279,7 +286,7 @@ class ChatCog(commands.Cog):
             await ctx.send("Destination to " + self.current.name + " in " + self.current.guild.name + ".")
 
     @commands.command(aliases=['send'])
-    @commands.is_owner()
+    @is_owner()
     @commands.dm_only()
     async def say(self, ctx: commands.Context, *, message: str):
         if self.current is not None:
@@ -289,7 +296,7 @@ class ChatCog(commands.Cog):
             await ctx.send("Destination has not been set!")
 
     @commands.command()
-    @commands.is_owner()
+    @is_owner()
     @commands.dm_only()
     async def refresh(self, ctx: commands.Context):
         os.environ["loop"] = "loop"
@@ -297,12 +304,36 @@ class ChatCog(commands.Cog):
         await self.bot.logout()
 
     @commands.command()
-    @commands.is_owner()
+    @is_owner()
     @commands.dm_only()
     async def shutdown(self, ctx: commands.Context):
         os.environ["loop"] = "stop"
         await ctx.send("Shutting down...")
         await self.bot.logout()
+
+    @commands.group()
+    async def react(self, ctx: commands.Context):
+        if ctx.invoked_subcommand is None:
+            await ctx.send('Invalid subcommand for react')
+
+    @react.command()
+    async def add(self, ctx: commands.Context, emoji: discord.PartialEmoji):
+        guild_id = str(ctx.guild.id)
+        member_id = str(ctx.author.id)
+        if emoji.is_custom_emoji():
+            self.reacts[guild_id][member_id]['custom'] = True
+            self.reacts[guild_id][member_id]['emote'] = str(emoji.id)
+            self.reacts[guild_id][member_id]['exists'] = True
+        else:
+            self.reacts[guild_id][member_id]['custom'] = False
+            self.reacts[guild_id][member_id]['emote'] = emoji.name
+            self.reacts[guild_id][member_id]['exists'] = True
+
+    @react.command()
+    async def remove(self, ctx: commands.Context):
+        guild_id = str(ctx.guild.id)
+        member_id = str(ctx.author.id)
+        self.reacts[guild_id][member_id]['exists'] = False
 
     @commands.command()
     async def roll(self, ctx: commands.Context, *, dice: str):
@@ -377,14 +408,24 @@ class ChatCog(commands.Cog):
         await ctx.send(ctx.message.author.mention + " hello")
 
     @commands.Cog.listener()
+    async def on_ready(self):
+        with open('reacts.txt') as file:
+            self.reacts = json.load(file)
+
+    @commands.Cog.listener()
+    async def on_disconnect(self):
+        with open('reacts.txt', 'w') as file:
+            json.dump(self.reacts, file)
+
+    @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         if message.author == self.bot.user:
             return
 
-        is_owner = await self.bot.is_owner(message.author)
+        is_bot_admin = message.author.id == 787208554431119360 or message.author.id == 238801458030575627
 
-        if isinstance(message.channel, discord.DMChannel) and not is_owner:
-            owner = self.bot.get_user(self.bot.owner_id)
+        if isinstance(message.channel, discord.DMChannel) and not is_bot_admin:
+            owner = self.bot.get_user(787208554431119360)
             await owner.send("Message from " + message.author.name + ": " + message.content)
 
         if "good bot" in message.content.lower():
@@ -414,11 +455,21 @@ class ChatCog(commands.Cog):
         if "darryl" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(620036969933701120))
 
-        if "bruh" in message.content.lower() or "high" in message.content.lower():
+        if "bruh" in message.content.lower() or ":high:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(786149121123680266))
 
         if ":cocaine:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(676624193739161613))
+
+        guild_id = str(message.guild.id)
+        member_id = str(message.author.id)
+        if 'exists' in self.reacts[guild_id][member_id]:
+            if self.reacts[guild_id][member_id]['exists']:
+                if self.reacts[guild_id][member_id]['custom']:
+                    emoji = self.bot.get_emoji(int(self.reacts[guild_id][member_id]['emoji']))
+                    await message.add_reaction(emoji)
+                else:
+                    await message.add_reaction(self.reacts[guild_id][member_id]['emoji'])
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user):
@@ -432,6 +483,7 @@ class ChatCog(commands.Cog):
             await reaction.message.add_reaction('🇹')
 
 
+# Token for Boomer258
 token = "NzA1Nzk0OTI3Nzk1MTA5ODg4.XsRsWQ.uwCzo_r6LMm1kQ6gX2YSfZUlRVs"
 prefix = "m!"
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(prefix))
@@ -446,18 +498,18 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print("------")
-    activity = discord.Activity(name='the big NYC New Year\'s ball', type=discord.ActivityType.watching)
+    activity = discord.Activity(name='the light', type=discord.ActivityType.watching)
     await bot.change_presence(activity=activity)
 
 
 @bot.event
 async def on_command_error(ctx: commands.context, error: commands.CommandError):
     if isinstance(error, commands.PrivateMessageOnly):
-        user = bot.get_user(238801458030575627)
+        user = bot.get_user(787208554431119360)
         await user.send("Someone tried to get me to say something not in a DM.")
 
     if isinstance(error, commands.NotOwner):
-        user = bot.get_user(238801458030575627)
+        user = bot.get_user(787208554431119360)
         await user.send("Someone tried to get me to say something that wasn't the owner.")
 
 
@@ -465,9 +517,6 @@ async def on_command_error(ctx: commands.context, error: commands.CommandError):
 async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
-
-    if message.author.name == "BerzerkerBear":
-        await message.add_reaction(bot.get_emoji(620031636771176461))
 
     if (("moth" in message.content.lower()) and ("mother" not in message.content.lower())
             and "mothbot" not in message.content.lower())\
