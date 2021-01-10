@@ -328,10 +328,10 @@ class ChatCog(commands.Cog):
             self.reacts[guild_id][member_id] = {}
 
         if emoji.is_custom_emoji():
-            self.reacts[guild_id][member_id]['custom'] = True
+            self.reacts[guild_id][member_id]['custom'] = 'True'
             self.reacts[guild_id][member_id]['emoji'] = str(emoji.id)
         else:
-            self.reacts[guild_id][member_id]['custom'] = False
+            self.reacts[guild_id][member_id]['custom'] = 'False'
             self.reacts[guild_id][member_id]['emoji'] = emoji.name
 
     @react.command()
@@ -470,9 +470,9 @@ class ChatCog(commands.Cog):
 
         guild_id = str(message.guild.id)
         member_id = str(message.author.id)
-        if 'exists' in self.reacts[guild_id][member_id]:
-            if self.reacts[guild_id][member_id]['exists']:
-                if self.reacts[guild_id][member_id]['custom']:
+        if guild_id in self.reacts:
+            if member_id in self.reacts[guild_id]:
+                if self.reacts[guild_id][member_id]['custom'] == 'True':
                     emoji = self.bot.get_emoji(int(self.reacts[guild_id][member_id]['emoji']))
                     await message.add_reaction(emoji)
                 else:
