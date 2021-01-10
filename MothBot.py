@@ -320,20 +320,27 @@ class ChatCog(commands.Cog):
     async def add(self, ctx: commands.Context, emoji: discord.PartialEmoji):
         guild_id = str(ctx.guild.id)
         member_id = str(ctx.author.id)
+        if guild_id in self.reacts:
+            if member_id not in self.reacts[guild_id]:
+                self.reacts[guild_id][member_id] = {}
+        else:
+            self.reacts[guild_id] = {}
+            self.reacts[guild_id][member_id] = {}
+
         if emoji.is_custom_emoji():
             self.reacts[guild_id][member_id]['custom'] = True
-            self.reacts[guild_id][member_id]['emote'] = str(emoji.id)
-            self.reacts[guild_id][member_id]['exists'] = True
+            self.reacts[guild_id][member_id]['emoji'] = str(emoji.id)
         else:
             self.reacts[guild_id][member_id]['custom'] = False
-            self.reacts[guild_id][member_id]['emote'] = emoji.name
-            self.reacts[guild_id][member_id]['exists'] = True
+            self.reacts[guild_id][member_id]['emoji'] = emoji.name
 
     @react.command()
     async def remove(self, ctx: commands.Context):
         guild_id = str(ctx.guild.id)
         member_id = str(ctx.author.id)
-        self.reacts[guild_id][member_id]['exists'] = False
+        if guild_id in self.reacts:
+            if member_id in self.reacts[guild_id]:
+                del self.reacts[guild_id][member_id]
 
     @commands.command()
     async def roll(self, ctx: commands.Context, *, dice: str):
