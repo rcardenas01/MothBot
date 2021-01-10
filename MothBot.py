@@ -416,12 +416,12 @@ class ChatCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        with open('reacts.txt') as file:
+        with open('reacts.json', 'r') as file:
             self.reacts = json.load(file)
 
     @commands.Cog.listener()
     async def on_disconnect(self):
-        with open('reacts.txt', 'w') as file:
+        with open('reacts.json', 'w') as file:
             json.dump(self.reacts, file)
 
     @commands.Cog.listener()

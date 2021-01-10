@@ -2,4 +2,4 @@ venv/
 .idea/
 __pycache__/
 MothBotDriver.sh
-*.txt
+*.json
