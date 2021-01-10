@@ -334,6 +334,8 @@ class ChatCog(commands.Cog):
             self.reacts[guild_id][member_id]['custom'] = 'False'
             self.reacts[guild_id][member_id]['emoji'] = emoji.name
 
+        await ctx.send("Set to react to " + ctx.author.mention + " with " + str(emoji))
+
     @react.command()
     async def remove(self, ctx: commands.Context):
         guild_id = str(ctx.guild.id)
@@ -341,6 +343,8 @@ class ChatCog(commands.Cog):
         if guild_id in self.reacts:
             if member_id in self.reacts[guild_id]:
                 del self.reacts[guild_id][member_id]
+
+        await ctx.send("Will no longer react to " + ctx.author.mention)
 
     @commands.command()
     async def roll(self, ctx: commands.Context, *, dice: str):
