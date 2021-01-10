@@ -330,6 +330,9 @@ class ChatCog(commands.Cog):
 
         self.reacts[guild_id][member_id]['emoji'] = emoji
 
+        with open('reacts.json', 'w') as file:
+            json.dump(self.reacts, file)
+
         await ctx.send("Set to react to " + ctx.author.mention + " with " + str(emoji))
 
     @react.command()
@@ -339,6 +342,9 @@ class ChatCog(commands.Cog):
         if guild_id in self.reacts:
             if member_id in self.reacts[guild_id]:
                 del self.reacts[guild_id][member_id]
+
+        with open('reacts.json', 'w') as file:
+            json.dump(self.reacts, file)
 
         await ctx.send("Will no longer react to " + ctx.author.mention)
 
@@ -416,13 +422,8 @@ class ChatCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        with open('reacts.json', 'r') as file:
-            self.reacts = json.load(file)
-
-    @commands.Cog.listener()
-    async def on_disconnect(self):
-        with open('reacts.json', 'w') as file:
-            json.dump(self.reacts, file)
+        with open('reacts.json', 'r') as in_file:
+            self.reacts = json.load(in_file)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
