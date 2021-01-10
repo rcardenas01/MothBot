@@ -259,6 +259,7 @@ class MusicCog(commands.Cog):
             elif reaction.emoji == '\U0001F502':  # Repeat Single
                 await ctx.invoke(self._loop)
 
+
 def is_owner():
     def predicate(ctx):
         return ctx.author.id == 238801458030575627 or ctx.author.id == 787208554431119360
@@ -317,7 +318,7 @@ class ChatCog(commands.Cog):
             await ctx.send('Invalid subcommand for react')
 
     @react.command()
-    async def add(self, ctx: commands.Context, emoji: discord.PartialEmoji):
+    async def add(self, ctx: commands.Context, emoji: str):
         guild_id = str(ctx.guild.id)
         member_id = str(ctx.author.id)
         if guild_id in self.reacts:
@@ -327,12 +328,7 @@ class ChatCog(commands.Cog):
             self.reacts[guild_id] = {}
             self.reacts[guild_id][member_id] = {}
 
-        if emoji.is_custom_emoji():
-            self.reacts[guild_id][member_id]['custom'] = 'True'
-            self.reacts[guild_id][member_id]['emoji'] = str(emoji.id)
-        else:
-            self.reacts[guild_id][member_id]['custom'] = 'False'
-            self.reacts[guild_id][member_id]['emoji'] = emoji.name
+        self.reacts[guild_id][member_id]['emoji'] = emoji
 
         await ctx.send("Set to react to " + ctx.author.mention + " with " + str(emoji))
 
@@ -476,11 +472,7 @@ class ChatCog(commands.Cog):
         member_id = str(message.author.id)
         if guild_id in self.reacts:
             if member_id in self.reacts[guild_id]:
-                if self.reacts[guild_id][member_id]['custom'] == 'True':
-                    emoji = self.bot.get_emoji(int(self.reacts[guild_id][member_id]['emoji']))
-                    await message.add_reaction(emoji)
-                else:
-                    await message.add_reaction(self.reacts[guild_id][member_id]['emoji'])
+                await message.add_reaction(self.reacts[guild_id][member_id]['emoji'])
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user):
