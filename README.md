@@ -9,4 +9,5 @@ This project is a little working hobby of mine that I call the Mothbot. It's jus
 4. Generally having a laugh. 
 
 Note: This bot was tailor made with a specific discord server in mind, so I can't guarantee that the jokes and other commands used here, you will find funny.
+Another Note: Any tokens in previous commits are no longer valid. You can no longer use them to log into this bot user.
 
