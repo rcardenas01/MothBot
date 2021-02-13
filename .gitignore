@@ -2,4 +2,5 @@ venv/
 .idea/
 __pycache__/
 MothBotDriver.sh
-*.json
+reacts.json
+token.txt

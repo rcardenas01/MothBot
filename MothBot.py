@@ -1,7 +1,7 @@
 import asyncio
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import random
 
 import math
@@ -271,6 +271,7 @@ class ChatCog(commands.Cog):
         self.bot = bot
         self.current = None
         self.reacts = {}
+        self.void = {}
 
     @commands.command()
     @is_owner()
@@ -347,6 +348,37 @@ class ChatCog(commands.Cog):
             json.dump(self.reacts, file)
 
         await ctx.send("Will no longer react to " + ctx.author.mention)
+
+    @commands.group()
+    async def void(self, ctx: commands.Context):
+        if ctx.invoked_subcommand is None:
+            await ctx.send("Invalid subcommand for void")
+
+    @void.command()
+    async def set(self, ctx: commands.Context, channel_id: discord.TextChannel):
+        guild_id = str(ctx.guild.id)
+        self.void[guild_id] = str(channel_id.id)
+
+        with open('void.json', 'w') as file:
+            json.dump(self.void, file)
+
+        await ctx.send("Installed a bottomless void in " + channel_id.name)
+
+    @void.command()
+    async def remove(self, ctx: commands.Context):
+        guild_id = str(ctx.guild.id)
+        del self.void[guild_id]
+
+        with open('void.json', 'w') as file:
+            json.dump(self.void, file)
+
+        await ctx.send("The void collapsed.")
+
+    @tasks.loop(minutes=5)
+    async def void_swallow(self):
+        for channel_id in self.void.values():
+            id_ = int(channel_id)
+            void = self.bot.get_channel(id_)
 
     @commands.command()
     async def roll(self, ctx: commands.Context, *, dice: str):
@@ -425,6 +457,9 @@ class ChatCog(commands.Cog):
         with open('reacts.json', 'r') as in_file:
             self.reacts = json.load(in_file)
 
+        with open('void.json', 'r') as void_in:
+            self.void = json.load(void_in)
+
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         if message.author == self.bot.user:
@@ -488,7 +523,7 @@ class ChatCog(commands.Cog):
 
 
 # Token for Boomer258
-token = "NzA1Nzk0OTI3Nzk1MTA5ODg4.XsRsWQ.uwCzo_r6LMm1kQ6gX2YSfZUlRVs"
+token = "NzA1Nzk0OTI3Nzk1MTA5ODg4.Xqw4vw.HftWaczY0yBIWRU6MDqVDoohPek"
 prefix = "m!"
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(prefix))
 
