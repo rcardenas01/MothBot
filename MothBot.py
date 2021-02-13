@@ -523,7 +523,8 @@ class ChatCog(commands.Cog):
 
 
 # Token for Boomer258
-token = "NzA1Nzk0OTI3Nzk1MTA5ODg4.Xqw4vw.HftWaczY0yBIWRU6MDqVDoohPek"
+with open("token.txt") as f:
+    token = f.read()
 prefix = "m!"
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(prefix))
 
