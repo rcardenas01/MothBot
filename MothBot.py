@@ -501,9 +501,6 @@ class ChatCog(commands.Cog):
         if "bruh" in message.content.lower() or ":high:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(786149121123680266))
 
-        if ":cocaine:" in message.content.lower():
-            await message.add_reaction(self.bot.get_emoji(676624193739161613))
-
         guild_id = str(message.guild.id)
         member_id = str(message.author.id)
         if guild_id in self.reacts:
@@ -569,13 +566,6 @@ async def on_message(message: discord.Message):
 
     if "praise be" in message.content.lower():
         await message.channel.send("praise be")
-
-    if "fuck you" == message.content.lower() or "fuck off" == message.content.lower():
-        use_shiny = random.random()
-        if use_shiny <= 0.25:
-            await message.channel.send(bot.get_emoji(759987510037446677))
-        else:
-            await message.channel.send(bot.get_emoji(759991573592932352))
 
     await bot.process_commands(message)
 
