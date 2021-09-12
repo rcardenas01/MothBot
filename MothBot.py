@@ -354,15 +354,15 @@ class ChatCog(commands.Cog):
         if ctx.invoked_subcommand is None:
             await ctx.send("Invalid subcommand for void")
 
-    @void.command()
-    async def set(self, ctx: commands.Context, channel_id: discord.TextChannel):
-        guild_id = str(ctx.guild.id)
-        self.void[guild_id] = str(channel_id.id)
-
-        with open('void.json', 'w') as file:
-            json.dump(self.void, file)
-
-        await ctx.send("Installed a bottomless void in " + channel_id.name)
+    # @void.command()
+    # async def set(self, ctx: commands.Context, channel_id: discord.TextChannel):
+    #     guild_id = str(ctx.guild.id)
+    #     self.void[guild_id] = str(channel_id.id)
+    #
+    #     with open('void.json', 'w') as file:
+    #         json.dump(self.void, file)
+    #
+    #     await ctx.send("Installed a bottomless void in " + channel_id.name)
 
     @void.command()
     async def remove(self, ctx: commands.Context):
