@@ -501,11 +501,12 @@ class ChatCog(commands.Cog):
         if "bruh" in message.content.lower() or ":high:" in message.content.lower():
             await message.add_reaction(self.bot.get_emoji(786149121123680266))
 
-        guild_id = str(message.guild.id)
-        member_id = str(message.author.id)
-        if guild_id in self.reacts:
-            if member_id in self.reacts[guild_id]:
-                await message.add_reaction(self.reacts[guild_id][member_id]['emoji'])
+        if isinstance(message.channel, discord.TextChannel):
+            guild_id = str(message.guild.id)
+            member_id = str(message.author.id)
+            if guild_id in self.reacts:
+                if member_id in self.reacts[guild_id]:
+                    await message.add_reaction(self.reacts[guild_id][member_id]['emoji'])
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user):
