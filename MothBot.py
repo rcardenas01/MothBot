@@ -260,10 +260,10 @@ class MusicCog(commands.Cog):
                 await ctx.invoke(self._loop)
 
 
-def is_owner():
-    def predicate(ctx):
-        return ctx.author.id == 238801458030575627 or ctx.author.id == 787208554431119360
-    return commands.check(predicate)
+# def is_owner():
+#     def predicate(ctx):
+#         return ctx.author.id == 238801458030575627 or ctx.author.id == 787208554431119360
+#     return commands.check(predicate)
 
 
 class ChatCog(commands.Cog):
@@ -274,7 +274,7 @@ class ChatCog(commands.Cog):
         self.void = {}
 
     @commands.command()
-    @is_owner()
+    @commands.is_owner()
     @commands.dm_only()
     async def set(self, ctx: commands.Context, id_send: int):
         self.current = await self.bot.fetch_channel(id_send)
@@ -288,7 +288,7 @@ class ChatCog(commands.Cog):
             await ctx.send("Destination to " + self.current.name + " in " + self.current.guild.name + ".")
 
     @commands.command(aliases=['send'])
-    @is_owner()
+    @commands.is_owner()
     @commands.dm_only()
     async def say(self, ctx: commands.Context, *, message: str):
         if self.current is not None:
@@ -298,7 +298,7 @@ class ChatCog(commands.Cog):
             await ctx.send("Destination has not been set!")
 
     @commands.command()
-    @is_owner()
+    @commands.is_owner()
     @commands.dm_only()
     async def refresh(self, ctx: commands.Context):
         os.environ["loop"] = "loop"
@@ -306,7 +306,7 @@ class ChatCog(commands.Cog):
         await self.bot.logout()
 
     @commands.command()
-    @is_owner()
+    @commands.is_owner()
     @commands.dm_only()
     async def shutdown(self, ctx: commands.Context):
         os.environ["loop"] = "stop"
