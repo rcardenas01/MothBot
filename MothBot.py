@@ -465,10 +465,10 @@ class ChatCog(commands.Cog):
         if message.author == self.bot.user:
             return
 
-        is_bot_admin = message.author.id == 787208554431119360 or message.author.id == 238801458030575627
+        is_bot_admin = message.author.id == self.bot.owner_id
 
         if isinstance(message.channel, discord.DMChannel) and not is_bot_admin:
-            owner = self.bot.get_user(787208554431119360)
+            owner = self.bot.get_user(self.bot.owner_id)
             await owner.send("Message from " + message.author.name + ": " + message.content)
 
         if "good bot" in message.content.lower():
