@@ -465,7 +465,7 @@ class ChatCog(commands.Cog):
         if message.author == self.bot.user:
             return
 
-        is_bot_admin = message.author.id == self.bot.owner_id
+        is_bot_admin = await self.bot.is_owner(message.author)
 
         if isinstance(message.channel, discord.DMChannel) and not is_bot_admin:
             owner = self.bot.get_user(self.bot.owner_id)
@@ -543,11 +543,11 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx: commands.context, error: commands.CommandError):
     if isinstance(error, commands.PrivateMessageOnly):
-        user = bot.get_user(787208554431119360)
+        user = await bot.fetch_user(bot.owner_id)
         await user.send("Someone tried to get me to say something not in a DM.")
 
     if isinstance(error, commands.NotOwner):
-        user = bot.get_user(787208554431119360)
+        user = await bot.fetch_user(bot.owner_id)
         await user.send("Someone tried to get me to say something that wasn't the owner.")
 
 
